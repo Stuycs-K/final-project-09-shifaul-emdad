@@ -1,10 +1,10 @@
 # Work Log
 
-## GROUP MEMBER 1
+## GROUP MEMBER 1: Shifaul
 
-### date x
+### date 19-27
 
-info
+sick/absent/deciding/forgot 
 
 ### date y
 
