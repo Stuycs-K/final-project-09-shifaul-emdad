@@ -1,14 +1,14 @@
 # Work Log
 
-## GROUP MEMBER 1: Shifaul
+## GROUP MEMBER 1: Shifaul Emdad
 
 ### date 19-27
 
 sick/absent/deciding/forgot 
 
-### date y
+### date 28
 
-info
+Decided on doing Playfair Cipher
 
 
 ## GROUP MEMBER 2
