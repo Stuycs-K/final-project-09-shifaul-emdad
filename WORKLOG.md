@@ -8,7 +8,7 @@ sick/absent/deciding/forgot
 
 ### date 28
 
-Decided on doing Playfair Cipher
+Decided on doing Playfair Cipher Cryptography TryHackMe Room
 
 
 ## GROUP MEMBER 2
