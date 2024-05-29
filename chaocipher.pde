@@ -1,19 +1,21 @@
 char[] leftAlphabet = "HXUCZVAMDSLKPEFJRIGTWOBNYQ".toCharArray();
 char[] rightAlphabet = "PTLNBQDEOYSFAVZKGJRIHWXUMC".toCharArray();
 String message = "HELLO";  // Example message
+String encryptedMessage = "";
 int step = 0;
 
 void setup() {
-    size(800, 600);
+    size(800, 600); // Set the window size
     textSize(16);
 }
 
 void draw() {
-    background(255); 
+    background(255);
     drawAlphabets(leftAlphabet, rightAlphabet);
     fill(0);
     text("Message: " + message, 50, 500);
-    text("Step: " + step, 50, 530);
+    text("Encrypted Message: " + encryptedMessage, 50, 530);
+    text("Step: " + step, 50, 560);
     drawButtons();
 }
 
@@ -37,17 +39,21 @@ void drawButtons() {
 void mousePressed() {
     if (mouseX > 50 && mouseX < 150 && mouseY > 550 && mouseY < 580) {
         if (step < message.length()) {
-            processNextStep(message.charAt(step), leftAlphabet, rightAlphabet);
+            char encryptedChar = processNextStep(message.charAt(step), leftAlphabet, rightAlphabet);
+            encryptedMessage += encryptedChar;
             step++;
         }
     }
 }
 
-void processNextStep(char currentChar, char[] leftAlphabet, char[] rightAlphabet) {
+char processNextStep(char currentChar, char[] leftAlphabet, char[] rightAlphabet) {
     int position = findPosition(leftAlphabet, currentChar);
     if (position != -1) {
-        permuteAlphabets(leftAlphabet, rightAlphabet);
+        char encryptedChar = rightAlphabet[position];
+        permuteAlphabets(leftAlphabet, rightAlphabet, position);
+        return encryptedChar;
     }
+    return currentChar; // If character not found, return it as is
 }
 
 int findPosition(char[] alphabet, char character) {
@@ -59,20 +65,28 @@ int findPosition(char[] alphabet, char character) {
     return -1; // character not found
 }
 
-void permuteAlphabets(char[] leftAlphabet, char[] rightAlphabet) {
-    // Permute the left alphabet
-    char firstLeft = leftAlphabet[0];
-    System.arraycopy(leftAlphabet, 1, leftAlphabet, 0, leftAlphabet.length - 1);
-    leftAlphabet[leftAlphabet.length - 1] = firstLeft;
-    char tempLeft = leftAlphabet[1];
-    System.arraycopy(leftAlphabet, 2, leftAlphabet, 1, 12);
-    leftAlphabet[13] = tempLeft;
+void permuteAlphabets(char[] leftAlphabet, char[] rightAlphabet, int position) {
+    // Rotate the left alphabet based on the position
+    rotateArray(leftAlphabet, position + 1);
+    // Rotate the right alphabet based on the position
+    rotateArray(rightAlphabet, position);
 
-    // Permute the right alphabet
-    char firstRight = rightAlphabet[0];
-    System.arraycopy(rightAlphabet, 1, rightAlphabet, 0, rightAlphabet.length - 1);
-    rightAlphabet[rightAlphabet.length - 1] = firstRight;
-    char tempRight = rightAlphabet[1];
-    System.arraycopy(rightAlphabet, 2, rightAlphabet, 1, 12);
-    rightAlphabet[13] = tempRight;
+    // Move the left character at (position + 1) to the end and rotate the rest
+    moveCharAndRotate(leftAlphabet, position + 1);
+    // Move the right character at (position) to the end and rotate the rest
+    moveCharAndRotate(rightAlphabet, position);
+}
+
+void rotateArray(char[] array, int positions) {
+    for (int i = 0; i < positions; i++) {
+        char first = array[0];
+        System.arraycopy(array, 1, array, 0, array.length - 1);
+        array[array.length - 1] = first;
+    }
+}
+
+void moveCharAndRotate(char[] array, int position) {
+    char temp = array[position];
+    System.arraycopy(array, position + 1, array, position, array.length - position - 1);
+    array[array.length - 1] = temp;
 }
