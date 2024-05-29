@@ -5,7 +5,7 @@ String encryptedMessage = "";
 int step = 0;
 
 void setup() {
-    size(800, 600); // Set the window size
+    size(800, 600); 
     textSize(16);
 }
 
