@@ -11,6 +11,14 @@ sick/absent/deciding/forgot
 Decided on doing Playfair Cipher Cryptography TryHackMe Room
 
 
+### date 29
+
+Understood how to do it
+
+### date 30
+
+Tried to fix the encription to no avil
+
 ## GROUP MEMBER 2
 
 ### date x
