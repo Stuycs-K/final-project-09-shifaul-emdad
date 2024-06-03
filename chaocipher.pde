@@ -1,92 +1,101 @@
-char[] leftAlphabet = "HXUCZVAMDSLKPEFJRIGTWOBNYQ".toCharArray();
-char[] rightAlphabet = "PTLNBQDEOYSFAVZKGJRIHWXUMC".toCharArray();
-String message = "HELLO";  // Example message
-String encryptedMessage = "";
-int step = 0;
+String L_ALPHABET = "HXUCZVAMDSLKPEFJRIGTWOBNYQ";
+String R_ALPHABET = "PTLNBQDEOYSFAVZKGJRIHWXUMC";
+String plainText = "WHATISGOINGON";
+String cipherText = "";
+String recoveredText = "";
 
 void setup() {
-    size(800, 600); 
-    textSize(16);
+  size(800, 600);
+  textAlign(CENTER, CENTER);
+  textSize(16);
+  
+  cipherText = exec(plainText, true);
+  recoveredText = exec(cipherText, false);
+  
+  noLoop(); // Draw once
 }
 
 void draw() {
-    background(255);
-    drawAlphabets(leftAlphabet, rightAlphabet);
-    fill(0);
-    text("Message: " + message, 50, 500);
-    text("Encrypted Message: " + encryptedMessage, 50, 530);
-    text("Step: " + step, 50, 560);
-    drawButtons();
+  background(255);
+  
+  fill(0);
+  text("Original Plaintext: " + plainText, width / 2, 50);
+  text("Ciphertext: " + cipherText, width / 2, 100);
+  text("Recovered Plaintext: " + recoveredText, width / 2, 150);
+  
+  // Display the disks
+  drawDisks(L_ALPHABET, R_ALPHABET);
 }
 
-void drawAlphabets(char[] leftAlphabet, char[] rightAlphabet) {
-    fill(0);
-    text("Left Alphabet", 50, 30);
-    text("Right Alphabet", 400, 30);
-    for (int i = 0; i < leftAlphabet.length; i++) {
-        text(leftAlphabet[i], 50, 60 + i * 20); // Draw left alphabet
-        text(rightAlphabet[i], 400, 60 + i * 20); // Draw right alphabet
+void drawDisks(String leftAlphabet, String rightAlphabet) {
+  float diskRadius = 200;
+  float centerX = width / 2;
+  float centerY = height / 2 + 100;
+  
+  drawDisk(leftAlphabet, centerX - 250, centerY, diskRadius);
+  drawDisk(rightAlphabet, centerX + 250, centerY, diskRadius);
+}
+
+void drawDisk(String alphabet, float centerX, float centerY, float radius) {
+  fill(200);
+  ellipse(centerX, centerY, radius * 2, radius * 2);
+  
+  fill(0);
+  for (int i = 0; i < alphabet.length(); i++) {
+    float angle = TWO_PI / alphabet.length() * i;
+    float x = centerX + cos(angle) * (radius - 20);
+    float y = centerY + sin(angle) * (radius - 20);
+    text(alphabet.charAt(i), x, y);
+  }
+}
+
+int indexOf(char[] a, char c) {
+  for (int i = 0; i < a.length; ++i) {
+    if (a[i] == c) {
+      return i;
     }
+  }
+  return -1;
 }
 
-void drawButtons() {
-    fill(150);
-    rect(50, 550, 100, 30);
-    fill(0);
-    text("Next Step", 60, 570);
-}
-
-void mousePressed() {
-    if (mouseX > 50 && mouseX < 150 && mouseY > 550 && mouseY < 580) {
-        if (step < message.length()) {
-            char encryptedChar = processNextStep(message.charAt(step), leftAlphabet, rightAlphabet);
-            encryptedMessage += encryptedChar;
-            step++;
-        }
+String exec(String text, boolean isEncrypt) {
+  char[] left = L_ALPHABET.toCharArray();
+  char[] right = R_ALPHABET.toCharArray();
+  char[] eText = new char[text.length()];
+  char[] temp = new char[26];
+  
+  for (int i = 0; i < text.length(); ++i) {
+    int index;
+    if (isEncrypt) {
+      index = indexOf(right, text.charAt(i));
+      eText[i] = left[index];
+    } else {
+      index = indexOf(left, text.charAt(i));
+      eText[i] = right[index];
     }
-}
-
-char processNextStep(char currentChar, char[] leftAlphabet, char[] rightAlphabet) {
-    int position = findPosition(leftAlphabet, currentChar);
-    if (position != -1) {
-        char encryptedChar = rightAlphabet[position];
-        permuteAlphabets(leftAlphabet, rightAlphabet, position);
-        return encryptedChar;
+    if (i == text.length() - 1) {
+      break;
     }
-    return currentChar; // If character not found, return it as is
-}
-
-int findPosition(char[] alphabet, char character) {
-    for (int i = 0; i < alphabet.length; i++) {
-        if (alphabet[i] == character) {
-            return i;
-        }
-    }
-    return -1; // character not found
-}
-
-void permuteAlphabets(char[] leftAlphabet, char[] rightAlphabet, int position) {
-    // Rotate the left alphabet based on the position
-    rotateArray(leftAlphabet, position + 1);
-    // Rotate the right alphabet based on the position
-    rotateArray(rightAlphabet, position);
-
-    // Move the left character at (position + 1) to the end and rotate the rest
-    moveCharAndRotate(leftAlphabet, position + 1);
-    // Move the right character at (position) to the end and rotate the rest
-    moveCharAndRotate(rightAlphabet, position);
-}
-
-void rotateArray(char[] array, int positions) {
-    for (int i = 0; i < positions; i++) {
-        char first = array[0];
-        System.arraycopy(array, 1, array, 0, array.length - 1);
-        array[array.length - 1] = first;
-    }
-}
-
-void moveCharAndRotate(char[] array, int position) {
-    char temp = array[position];
-    System.arraycopy(array, position + 1, array, position, array.length - position - 1);
-    array[array.length - 1] = temp;
+    
+    // permute left
+    for (int j = index; j < 26; j++) temp[j - index] = left[j];
+    for (int j = 0; j < index; j++) temp[26 - index + j] = left[j];
+    char store = temp[1];
+    for (int j = 2; j < 14; j++) temp[j - 1] = temp[j];
+    temp[13] = store;
+    left = temp.clone();
+    
+    // permute right
+    for (int j = index; j < 26; j++) temp[j - index] = right[j];
+    for (int j = 0; j < index; j++) temp[26 - index + j] = right[j];
+    store = temp[0];
+    for (int j = 1; j < 26; j++) temp[j - 1] = temp[j];
+    temp[25] = store;
+    store = temp[2];
+    for (int j = 3; j < 14; j++) temp[j - 1] = temp[j];
+    temp[13] = store;
+    right = temp.clone();
+  }
+  
+  return new String(eText);
 }
