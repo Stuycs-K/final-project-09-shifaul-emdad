@@ -1,8 +1,27 @@
-String L_ALPHABET = "HXUCZVAMDSLKPEFJRIGTWOBNYQ";
-String R_ALPHABET = "PTLNBQDEOYSFAVZKGJRIHWXUMC";
-String plainText = "WHATISGOINGON";
+String L_ALPHABET = "ABCDEFGHIJKLMNOPQURSTUVWXYZ";
+String R_ALPHABET = "ABCDEFGHIJKLMNOPQURSTUVWXYZ";
+String plainText = "HELLO";
 String cipherText = "";
 String recoveredText = "";
+
+ArrayList<State> states = new ArrayList<State>();
+int currentStateIndex = 0;
+
+class State {
+  char letter;
+  String left;
+  String right;
+  boolean isEncrypt;
+  int matchIndex;
+  
+  State(char letter, String left, String right, boolean isEncrypt, int matchIndex) {
+    this.letter = letter;
+    this.left = left;
+    this.right = right;
+    this.isEncrypt = isEncrypt;
+    this.matchIndex = matchIndex;
+  }
+}
 
 void setup() {
   size(800, 600);
@@ -12,7 +31,7 @@ void setup() {
   cipherText = exec(plainText, true);
   recoveredText = exec(cipherText, false);
   
-  noLoop(); // Draw once
+  noLoop();
 }
 
 void draw() {
@@ -20,32 +39,56 @@ void draw() {
   
   fill(0);
   text("Original Plaintext: " + plainText, width / 2, 50);
-  text("Ciphertext: " + cipherText, width / 2, 100);
-  text("Recovered Plaintext: " + recoveredText, width / 2, 150);
+  if (currentStateIndex < plainText.length()) {
+    text("Current Ciphertext: " + cipherText.substring(0, currentStateIndex), width / 2, 100);
+    text("Current Plaintext: " + recoveredText.substring(0, currentStateIndex), width / 2, 150);
+  } else {
+    text("Ciphertext: " + cipherText, width / 2, 100);
+    text("Recovered Plaintext: " + recoveredText, width / 2, 150);
+  }
   
-  // Display the disks
-  drawDisks(L_ALPHABET, R_ALPHABET);
+  if (currentStateIndex < states.size()) {
+    State s = states.get(currentStateIndex);
+    text(s.isEncrypt ? "Encrypting letter: " + s.letter : "Decrypting letter: " + s.letter, width / 2, 200);
+    drawDisks(s.left, s.right, s.matchIndex, 300);
+  } 
 }
 
-void drawDisks(String leftAlphabet, String rightAlphabet) {
-  float diskRadius = 200;
+void drawDisks(String leftAlphabet, String rightAlphabet, int matchIndex, float centerY) {
+  float diskRadius = 100;
   float centerX = width / 2;
-  float centerY = height / 2 + 100;
   
-  drawDisk(leftAlphabet, centerX - 250, centerY, diskRadius);
-  drawDisk(rightAlphabet, centerX + 250, centerY, diskRadius);
+  drawDisk(leftAlphabet, centerX - 150, centerY, diskRadius, matchIndex, true);
+  drawDisk(rightAlphabet, centerX + 150, centerY, diskRadius, matchIndex, false);
 }
 
-void drawDisk(String alphabet, float centerX, float centerY, float radius) {
+void drawDisk(String alphabet, float centerX, float centerY, float radius, int matchIndex, boolean isLeft) {
   fill(200);
   ellipse(centerX, centerY, radius * 2, radius * 2);
   
   fill(0);
+  textAlign(CENTER, CENTER);
+  textSize(12);
+  text("zenith", centerX, centerY - radius - 10); // Top indicator (zenith)
+  text("nadir", centerX, centerY + radius + 10); // Bottom indicator (nadir)
+  textSize(16);
+  
   for (int i = 0; i < alphabet.length(); i++) {
-    float angle = TWO_PI / alphabet.length() * i;
+    float angle = TWO_PI / alphabet.length() * i - HALF_PI; // Adjusting angle to start from top
     float x = centerX + cos(angle) * (radius - 20);
     float y = centerY + sin(angle) * (radius - 20);
-    text(alphabet.charAt(i), x, y);
+    pushMatrix();
+    translate(x, y);
+    rotate(angle + HALF_PI);
+    if (isLeft && i == matchIndex) {
+      fill(255, 0, 0); // Red for the matching left letter
+    } else if (!isLeft && i == matchIndex) {
+      fill(0, 0, 255); // Blue for the matching right letter
+    } else {
+      fill(0);
+    }
+    text(alphabet.charAt(i), 0, 0);
+    popMatrix();
   }
 }
 
@@ -73,6 +116,9 @@ String exec(String text, boolean isEncrypt) {
       index = indexOf(left, text.charAt(i));
       eText[i] = right[index];
     }
+    
+    states.add(new State(text.charAt(i), new String(left), new String(right), isEncrypt, index));
+    
     if (i == text.length() - 1) {
       break;
     }
@@ -98,4 +144,11 @@ String exec(String text, boolean isEncrypt) {
   }
   
   return new String(eText);
+}
+
+void mousePressed() {
+  if (currentStateIndex < states.size()) {
+    currentStateIndex++;
+    redraw();
+  }
 }
