@@ -48,8 +48,8 @@ void draw() {
   
   // If current state index is less than plaintext length, display current ciphertext and plaintext
   if (currentStateIndex < plainText.length()) {
-    text("Current Ciphertext: " + cipherText.substring(0, currentStateIndex), width / 2, 100);
-    text("Current Plaintext: " + recoveredText.substring(0, currentStateIndex), width / 2, 150);
+    text("Current Ciphertext: " + cipherText.substring(0, currentStateIndex + 1), width / 2, 100);
+    text("Current Plaintext: " + recoveredText.substring(0, currentStateIndex + 1), width / 2, 150);
   } 
   // Otherwise, display full ciphertext and recovered plaintext
   else {
