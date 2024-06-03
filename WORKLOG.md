@@ -19,6 +19,14 @@ Understood how to do it
 
 Tried to fix the encription to no avil
 
+### date 31
+
+permuting was successful
+
+### date 3
+
+got it working
+
 ## GROUP MEMBER 2
 
 ### date x
