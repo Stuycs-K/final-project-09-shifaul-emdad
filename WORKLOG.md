@@ -27,6 +27,10 @@ permuting was successful
 
 got it working
 
+### date 7
+
+worked on the presentation
+
 ## GROUP MEMBER 2
 
 ### date x
