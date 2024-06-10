@@ -12,11 +12,11 @@ Ensure you have Processing installed on your computer. You can download it from 
 1. Download and Install Processing: Ensure you have Processing installed on your system.
 2. Clone the Project Repository: Clone this repository to your local machine.
 3. Open the Project in Processing:
-    - Open Processing.
-    - Go to File -> Open... and navigate to the project directory.
-    - Open the main project folder. Processing will load all .pde files as tabs.
+   - Open Processing.
+   - Go to File -> Open... and navigate to the project directory.
+   - Open the main project folder. Processing will load all .pde files as tabs.
 4. Run the Project:
-    - Click the "Run" button in Processing to start the visualization.
+   - Click the "Run" button in Processing to start the visualization.
 
 ### Using the Project
 
@@ -29,3 +29,8 @@ Ensure you have Processing installed on your computer. You can download it from 
 
 #### Decryption:
    - The decryption process can be visualized in a similar manner (code not included in this example but structured similarly).
+
+### PRESENTATION:
+   - Slides: https://docs.google.com/presentation/d/1HjtvPFUgqRVzYVRb_r5nBy1mQj2IaXnV8uk2mD7ljD8/edit?usp=sharing
+   - Contains a detailed presentation of the project, including explanations and visuals.
+
