@@ -18,7 +18,7 @@ Ensure you have Processing installed on your computer. You can download it from 
 4. Run the Project:
     - Click the "Run" button in Processing to start the visualization.
 
-#### Using the Project:
+### Using the Project
 
 #### Encryption:
    - The project starts with the encryption mode.
