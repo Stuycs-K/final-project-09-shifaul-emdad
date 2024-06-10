@@ -1,3 +1,2 @@
 # This document is required.
-#### Slides: https://docs.google.com/presentation/d/1dUYKrkrgnBhyVPkqd3-YNKahc3TlGb-6_WRHkbA9SLQ/edit?usp=sharing
-#### Docs: https://docs.google.com/document/d/15WLvoIcltpG0z79u8GCaZjTW_4RMw9iCCG_HzQSMbsk/edit?usp=sharing
+#### Slides: https://docs.google.com/presentation/d/1HjtvPFUgqRVzYVRb_r5nBy1mQj2IaXnV8uk2mD7ljD8/edit#slide=id.g2e3a4261b92_0_0
