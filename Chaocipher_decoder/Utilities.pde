@@ -30,14 +30,14 @@ void drawDisk(String alphabet, float centerX, float centerY, float radius, int m
     rotate(angle + HALF_PI);
     if (isLeft) {
       if (i == matchIndex) {
-        fill(255, 0, 0); // Red for the matching left letter
+        fill(0, 0, 255); // Red for the matching left letter
       } else {
         fill(0);
       }
       text(alphabet.charAt(i), 0, 0); // Display left alphabet normally
     } else {
       if (i == (26 - matchIndex)) {
-        fill(0, 0, 255); // Blue for the matching right letter counting backwards
+        fill(255, 0, 0); // Blue for the matching right letter counting backwards
       } else {
         fill(0);
       }
