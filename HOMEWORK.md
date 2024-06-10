@@ -1,2 +1,0 @@
-# THIS DOCUMENT IS REQUIRED
-Tryhackme link:
